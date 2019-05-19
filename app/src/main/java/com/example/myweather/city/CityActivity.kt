@@ -174,7 +174,7 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
 
 
     private fun getWeather() {
-        
+
     }
 
 
