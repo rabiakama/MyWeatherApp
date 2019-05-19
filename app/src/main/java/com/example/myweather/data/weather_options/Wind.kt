@@ -1,11 +1,11 @@
-package com.example.myweather.data
+package com.example.myweather.data.weather_options
 
 import com.google.gson.annotations.SerializedName
 
 
 data class Wind(
     @SerializedName("speed")
-    var speed: Float = 0.toFloat(),
+    val speed: Float = 0.toFloat(),
     @SerializedName("deg")
-    var deg: Float = 0.toFloat()
+    val deg: Float = 0.toFloat()
 )

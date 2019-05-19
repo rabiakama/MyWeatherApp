@@ -1,11 +1,11 @@
-package com.example.myweather.data
+package com.example.myweather.data.weather_options
 
 import com.google.gson.annotations.SerializedName
 
 
 data class Coord(
     @SerializedName("lon")
-    var lon: Float = 0.toFloat(),
+    val lon: Float = 0.toFloat(),
     @SerializedName("lat")
-    var lat: Float = 0.toFloat()
+    val lat: Float = 0.toFloat()
 )

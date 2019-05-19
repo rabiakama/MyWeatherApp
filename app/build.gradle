@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -23,6 +25,9 @@ android {
     buildTypes.each {
         it.buildConfigField('String', 'BASE_URL', BASE_URL)
         it.buildConfigField('String', 'API_KEY', API_KEY)
+    }
+    androidExtensions {
+        experimental = true
     }
 }
 

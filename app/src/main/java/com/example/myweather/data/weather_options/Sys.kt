@@ -1,12 +1,12 @@
-package com.example.myweather.data
+package com.example.myweather.data.weather_options
 
 import com.google.gson.annotations.SerializedName
 
 data class Sys(
     @SerializedName("country")
-    var country: String? = null,
+    val country: String? = null,
     @SerializedName("sunrise")
-    var sunrise: Long = 0,
+    val sunrise: Long = 0,
     @SerializedName("sunset")
-    var sunset: Long = 0
+    val sunset: Long = 0
 )

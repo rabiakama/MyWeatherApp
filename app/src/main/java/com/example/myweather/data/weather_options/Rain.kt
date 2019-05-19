@@ -1,9 +1,9 @@
-package com.example.myweather.data
+package com.example.myweather.data.weather_options
 
 import com.google.gson.annotations.SerializedName
 
 
 data class Rain(
     @SerializedName("3h")
-    var h3: Float = 0.toFloat()
+    val h3: Float = 0.toFloat()
 )

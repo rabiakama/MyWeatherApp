@@ -1,4 +1,4 @@
-package com.example.myweather
+package com.example.myweather.settings
 
 import android.Manifest
 import android.app.AlertDialog
@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import com.example.myweather.R
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResultCallback
 import com.google.android.gms.location.*
@@ -26,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-
+        this.setTitle("Settings")
 
         switchGps.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -36,8 +37,6 @@ class SettingsActivity : AppCompatActivity() {
             } else {
                 startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }
-
-
         }
     }
 
