@@ -31,7 +31,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection.HTTP_OK
 import kotlin.LazyThreadSafetyMode.NONE
-import com.google.gson.Gson
+
 
 class MainActivity : AppCompatActivity() {
 
