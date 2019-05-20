@@ -5,8 +5,6 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.database.sqlite.SQLiteDatabase
-import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper.myLooper
@@ -17,9 +15,6 @@ import android.widget.Toast.LENGTH_LONG
 import com.example.myweather.BuildConfig
 import com.example.myweather.R
 import com.example.myweather.city.CityActivity
-import com.example.myweather.city.CityAdapter
-import com.example.myweather.city.CityDetail
-import com.example.myweather.city.CityHelper
 import com.example.myweather.weather.WeatherResponse
 import com.example.myweather.service.WeatherServiceApi
 import com.example.myweather.settings.SettingsActivity
@@ -36,6 +31,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection.HTTP_OK
 import kotlin.LazyThreadSafetyMode.NONE
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     private var lon: String? = null
     private var lt="38.4189"
     private var lg="27.1287"
-    private var cityName:String?=null
 
     private val locationCallback: LocationCallback by lazy(NONE) {
         object : LocationCallback() {
@@ -62,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-       // cityName = intent.getStringExtra("name")
         getIzmir(lt,lg)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
@@ -94,7 +88,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun getCurrentData(latitude: String?, longitude: String?) {
         val retrofit = Retrofit.Builder()

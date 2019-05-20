@@ -1,6 +1,5 @@
 package com.example.myweather.service
 
-
 import com.example.myweather.weather.WeatherResponse
 import retrofit2.Call
 import retrofit2.http.GET

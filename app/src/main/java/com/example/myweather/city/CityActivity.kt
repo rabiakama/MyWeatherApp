@@ -2,40 +2,18 @@ package com.example.myweather.city
 
 import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
-import android.content.res.Configuration
 import android.database.sqlite.SQLiteDatabase
-import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.Toast
-import com.example.myweather.BuildConfig
 import com.example.myweather.R
-import com.example.myweather.home.MainActivity
-import com.example.myweather.service.WeatherServiceApi
-import com.example.myweather.util.isHidden
-import com.example.myweather.util.isVisible
-import com.example.myweather.weather.WeatherResponse
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_city.city_recycler
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.city_item.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.net.HttpURLConnection
 import kotlin.Int.Companion.MAX_VALUE
+
 
 
 class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
@@ -59,10 +37,9 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
         getAllCities()
 
 
-        /*city_recycler.setOnClickListener(object:View.OnClickListener{
+        /*checkboxCity.setOnClickListener(object:View.OnClickListener{
             override fun onClick(v: View?) {
-                val ct:Boolean=true
-                if(ct){
+                if(checkboxCity.isChecked){
                     val editor=getSharedPreferences("com.example.myweather.city.CityActivity",Context.MODE_PRIVATE).edit()
                     editor.putBoolean("City Added",true)
                     editor.apply()
@@ -75,22 +52,18 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
                     editor.putBoolean("City Removed",true)
                     editor.apply()
                     Toast.makeText(this@CityActivity,"Removed from Home",Toast.LENGTH_SHORT).show()
-
-
                 }
             }
 
         })*/
 
-
     }
-
-
     private fun getAllCities() {
         val json = readJSONFromAsset()
         val cities = gson.fromJson<City>(json, City::class.java)
         cityAdapter.cities = cities.cityDetail.toMutableList()
         city_recycler.adapter = cityAdapter
+
     }
 
     private fun readJSONFromAsset(): String? {
@@ -166,19 +139,11 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
     }
 
     override fun onItemClicked(city: CityDetail) {
-       /* val intent = Intent(this,MainActivity::class.java)
-        intent.putExtra("name", city.getName())
+        /*val intent = Intent(this,MainActivity::class.java)
+        intent.putExtra("id", city.getId())
         this.startActivity(intent)*/
-        getWeather()
-    }
 
-
-    private fun getWeather() {
+        }
 
     }
 
-
-
-
-
-}
