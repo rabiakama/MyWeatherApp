@@ -1,13 +1,5 @@
 # My Weather App
-
-
-
-# Used Libraries:
-- RxJava2
-- RxAndroid
-- Retrofit2
-- Android architecture components
-
+This application is a weather app taken from Open Weather Api.
 
 # Screenshots
  Home 
