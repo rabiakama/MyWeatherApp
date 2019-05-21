@@ -3,7 +3,6 @@ package com.example.myweather.view_pager
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import com.example.myweather.MainFragment
 import com.example.myweather.city.CityDetail
 
 
@@ -11,7 +10,7 @@ class ViewPagerAdapter(manager:FragmentManager,private val cityList:ArrayList<Ci
 
     override fun getItem(position: Int): Fragment {
 
-        return MainFragment.newInstance(cityList[position % cityList.size].toString() )
+        return MainFragment.newInstance(cityList[position % cityList.size] )
     }
 
     override fun getCount(): Int {

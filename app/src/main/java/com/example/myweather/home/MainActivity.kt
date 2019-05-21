@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.database.sqlite.SQLiteDatabase
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper.myLooper
@@ -15,8 +16,8 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import com.example.myweather.BuildConfig
 import com.example.myweather.R
-import com.example.myweather.city.City
 import com.example.myweather.city.CityActivity
+import com.example.myweather.city.CityAdapter
 import com.example.myweather.city.CityDetail
 import com.example.myweather.city.CityHelper
 import com.example.myweather.weather.WeatherResponse
@@ -24,11 +25,9 @@ import com.example.myweather.service.WeatherServiceApi
 import com.example.myweather.settings.SettingsActivity
 import com.example.myweather.util.isHidden
 import com.example.myweather.util.isValid
-import com.example.myweather.util.isVisible
 import com.example.myweather.view_pager.ViewPagerAdapter
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-import kotlinx.android.synthetic.main.activity_city.*
 import kotlinx.android.synthetic.main.activity_main.*
 import com.nshmura.recyclertablayout.RecyclerTabLayout
 import retrofit2.Call
@@ -51,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     val factory: SQLiteDatabase.CursorFactory? = null
     private  var cityDbHelper: CityHelper?=null
     private lateinit var pagerAdapter: ViewPagerAdapter
+    private lateinit var cityAdapter: CityAdapter
     private  var cityLis:ArrayList<CityDetail> = arrayListOf()
     private lateinit var recyclerTabLayout: RecyclerTabLayout
 
@@ -71,17 +71,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         cityDbHelper = CityHelper(this, "city.db", factory, 2)
 
-        pagerAdapter = ViewPagerAdapter(supportFragmentManager, cityLis)
-        viewPager.adapter = pagerAdapter
-        recyclerTabLayout = findViewById(R.id.recyclerTabLayout)
-        recyclerTabLayout.setUpWithViewPager(viewPager)
-        viewPager.currentItem= pagerAdapter.count / 2
+        if(cityLis.size >0){
+            setViewPagerAdapter()
+        }
+
+        getAllFavCities()
 
         cityId = intent.getStringExtra("name")
         lat=intent.getStringExtra("latitude")
         lon=intent.getStringExtra("longitude")
 
-         getIzmir(lt,lg)
+         //getIzmir(lt,lg)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
         val isPermissionProvided = checkLocationPermission()
@@ -111,6 +111,18 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun setViewPagerAdapter() {
+        if(pagerAdapter !=null){
+            pagerAdapter.notifyDataSetChanged()
+        }
+        recyclerTabLayout = findViewById(R.id.recyclerTabLayout)
+        recyclerTabLayout.setUpWithViewPager(viewPager)
+        viewPager.offscreenPageLimit=cityLis.size
+        viewPager.pageMargin=10
+        pagerAdapter= ViewPagerAdapter(supportFragmentManager,cityLis)
+        viewPager.adapter=pagerAdapter
     }
 
     private fun getCurrentData(latitude: String?, longitude: String?) {
@@ -272,6 +284,22 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    fun getAllFavCities() {
+        class FavoritesTask : AsyncTask<Void, Void, Void>() {
+            override fun doInBackground(vararg params: Void): Void? {
+                cityLis.clear()
+                cityLis.addAll(cityDbHelper!!.getAddAll())
+
+                return null
+            }
+
+            override fun onPostExecute(aVoid: Void?) {
+                super.onPostExecute(aVoid)
+                cityAdapter.notifyDataSetChanged()
+            }
+        }
+        FavoritesTask().execute()
+    }
 
 }
 

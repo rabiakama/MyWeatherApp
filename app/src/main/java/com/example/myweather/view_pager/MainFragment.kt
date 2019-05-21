@@ -1,4 +1,4 @@
-package com.example.myweather
+package com.example.myweather.view_pager
 
 import android.content.Context
 import android.net.Uri
@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.myweather.city.City
+import com.example.myweather.R
 import com.example.myweather.city.CityDetail
 import com.example.myweather.city.CityHelper
 
@@ -47,13 +47,15 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-       val view= inflater.inflate(R.layout.fragment_main, container, false)
+        val view= inflater.inflate(R.layout.fragment_main, container, false)
         val cityName= view.findViewById<TextView>(R.id.tv_cityName)
         val temp= view.findViewById<TextView>(R.id.tv_tempInDegree)
         val tempMax= view.findViewById<TextView>(R.id.tv_tempMax)
-        val tempMin= view.findViewById<TextView>(R.id. tv_tempMin)
+        val tempMin= view.findViewById<TextView>(R.id.tv_tempMin)
         val humidity= view.findViewById<TextView>(R.id.tv_Humidity)
         val rain= view.findViewById<TextView>(R.id.tv_Rain)
+
+
 
         val args=arguments
         if (args != null) {
