@@ -2,6 +2,7 @@ package com.example.myweather.city
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -9,9 +10,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import com.example.myweather.R
+import com.example.myweather.home.MainActivity
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_city.city_recycler
+import kotlinx.android.synthetic.main.city_item.*
 import kotlin.Int.Companion.MAX_VALUE
 
 
@@ -24,6 +29,8 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
     private var cityId: String?=null
     private  var cityDbHelper: CityHelper?=null
     val factory: SQLiteDatabase.CursorFactory? = null
+    private var lat: String? = null
+    private var lon: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,25 +44,12 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
         getAllCities()
 
 
-        /*checkboxCity.setOnClickListener(object:View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(checkboxCity.isChecked){
-                    val editor=getSharedPreferences("com.example.myweather.city.CityActivity",Context.MODE_PRIVATE).edit()
-                    editor.putBoolean("City Added",true)
-                    editor.apply()
-                    saveCity()
-                    Toast.makeText(this@CityActivity,"Added to Home",Toast.LENGTH_SHORT).show()
-                }else{
-                    val ctyId=intent.extras.getInt("id")
-                    cityDbHelper!!.deleteCity(ctyId)
-                    val editor=getSharedPreferences("com.example.myweather.city.CityActivity",Context.MODE_PRIVATE).edit()
-                    editor.putBoolean("City Removed",true)
-                    editor.apply()
-                    Toast.makeText(this@CityActivity,"Removed from Home",Toast.LENGTH_SHORT).show()
-                }
-            }
+        checkboxCity.setOnCheckedChangeListener { buttonView, isChecked ->
 
-        })*/
+
+
+
+        }
 
     }
     private fun getAllCities() {
@@ -139,9 +133,13 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
     }
 
     override fun onItemClicked(city: CityDetail) {
-        /*val intent = Intent(this,MainActivity::class.java)
-        intent.putExtra("id", city.getId())
-        this.startActivity(intent)*/
+        val intent = Intent(this, MainActivity::class.java)
+        /*intent.putExtra("longitude", city.getLon())
+        intent.putExtra("latitude", city.getLat())
+        intent.putExtra("name",city.getName())*/
+
+        cityDbHelper?.addCity(city)
+        this.startActivity(intent)
 
         }
 

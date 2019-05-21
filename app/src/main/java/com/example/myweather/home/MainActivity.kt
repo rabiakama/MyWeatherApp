@@ -5,6 +5,7 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.database.sqlite.SQLiteDatabase
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper.myLooper
@@ -14,16 +15,22 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import com.example.myweather.BuildConfig
 import com.example.myweather.R
+import com.example.myweather.city.City
 import com.example.myweather.city.CityActivity
+import com.example.myweather.city.CityDetail
+import com.example.myweather.city.CityHelper
 import com.example.myweather.weather.WeatherResponse
 import com.example.myweather.service.WeatherServiceApi
 import com.example.myweather.settings.SettingsActivity
 import com.example.myweather.util.isHidden
 import com.example.myweather.util.isValid
 import com.example.myweather.util.isVisible
+import com.example.myweather.view_pager.ViewPagerAdapter
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+import kotlinx.android.synthetic.main.activity_city.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,6 +47,11 @@ class MainActivity : AppCompatActivity() {
     private var lon: String? = null
     private var lt="38.4189"
     private var lg="27.1287"
+    private var cityId:String?=null
+    val factory: SQLiteDatabase.CursorFactory? = null
+    private  var cityDbHelper: CityHelper?=null
+    private lateinit var pagerAdapter: ViewPagerAdapter
+    private  var cityLis:ArrayList<CityDetail> = arrayListOf()
 
     private val locationCallback: LocationCallback by lazy(NONE) {
         object : LocationCallback() {
@@ -57,7 +69,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getIzmir(lt,lg)
+        cityDbHelper = CityHelper(this, "city.db", factory, 2)
+
+        pagerAdapter = ViewPagerAdapter(supportFragmentManager, cityLis)
+        viewPager.adapter = pagerAdapter
+        viewPager.currentItem= pagerAdapter.count / 2
+
+        cityId = intent.getStringExtra("name")
+        lat=intent.getStringExtra("latitude")
+        lon=intent.getStringExtra("longitude")
+
+         getIzmir(lt,lg)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
         val isPermissionProvided = checkLocationPermission()
@@ -108,40 +130,41 @@ class MainActivity : AppCompatActivity() {
                     weatherResponse?.let {
                         with(it) {
                             val stringBuilder =
-                                   "Country: " +
-                                    sys?.country +
-                                    "\n" +
-                                    "City: " +
-                                    name +
-                                    "\n" +
-                                    "Temperature: " +
-                                    main?.temp + "°C" +
-                                    "\n" +
-                                    "Temperature(Min): " +
-                                    main?.temp_min + "°C" +
-                                    "\n" +
-                                    "Temperature(Max): " +
-                                    main?.temp_max + "°C" +
-                                    "\n" +
-                                    "Humidity: " +
-                                    " %" +
-                                    main?.humidity +
-                                    "\n" +
-                                    "Rain: " +
-                                    "%"+
-                                    main?.h3+
-                                     "\n" +
-                                    "Pressure: " +
-                                     main?.pressure
+                                "Country: " +
+                                        sys?.country +
+                                        "\n" +
+                                        "City: " +
+                                        name +
+                                        "\n" +
+                                        "Temperature: " +
+                                        main?.temp + "°C" +
+                                        "\n" +
+                                        "Temperature(Min): " +
+                                        main?.temp_min + "°C" +
+                                        "\n" +
+                                        "Temperature(Max): " +
+                                        main?.temp_max + "°C" +
+                                        "\n" +
+                                        "Humidity: " +
+                                        " %" +
+                                        main?.humidity +
+                                        "\n" +
+                                        "Rain: " +
+                                        "%"+
+                                        main?.h3+
+                                        "\n" +
+                                        "Pressure: " +
+                                        main?.pressure
 
                             weatherProgress.isHidden = response.isSuccessful
-                            weatherText.text = stringBuilder
-                            weatherText.isVisible = response.isSuccessful
+                            textWeather.text = stringBuilder
+                            textWeather.isVisible = response.isSuccessful
                         }
                     }
                 }
             }
         })
+
     }
 
     private fun checkLocationPermission(): Boolean {
@@ -241,13 +264,15 @@ class MainActivity : AppCompatActivity() {
                                         main?.pressure
 
                             weatherProgress.isHidden = response.isSuccessful
-                            weatherText.text = stringBuilder
-                            weatherText.isVisible = response.isSuccessful
+                            textWeather.text = stringBuilder
+                            textWeather.isVisible = response.isSuccessful
                         }
                     }
                 }
             }
         })
     }
+
+
 }
 

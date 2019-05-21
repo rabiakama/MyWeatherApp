@@ -45,7 +45,7 @@ class CityHelper(context: Context, name: String?, factory: SQLiteDatabase.Cursor
                 COLUMN_CITYID + " INTEGER, " +
                 COLUMN_CITY_NAME + " TEXT NOT NULL, " +
                 COLUMN_COORD_LAT + " REAL NOT NULL, " +
-                COLUMN_COORD_LONG + " REAL NOT NULL, " +
+                COLUMN_COORD_LONG + " REAL NOT NULL " +
                 ");"
         if (db != null) {
             db.execSQL(SQL_CREATE_CITY_TABLE)
