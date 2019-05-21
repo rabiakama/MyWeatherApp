@@ -30,7 +30,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 import kotlinx.android.synthetic.main.activity_city.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_main.*
+import com.nshmura.recyclertablayout.RecyclerTabLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     private  var cityDbHelper: CityHelper?=null
     private lateinit var pagerAdapter: ViewPagerAdapter
     private  var cityLis:ArrayList<CityDetail> = arrayListOf()
+    private lateinit var recyclerTabLayout: RecyclerTabLayout
 
     private val locationCallback: LocationCallback by lazy(NONE) {
         object : LocationCallback() {
@@ -68,11 +69,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         cityDbHelper = CityHelper(this, "city.db", factory, 2)
 
         pagerAdapter = ViewPagerAdapter(supportFragmentManager, cityLis)
         viewPager.adapter = pagerAdapter
+        recyclerTabLayout = findViewById(R.id.recyclerTabLayout)
+        recyclerTabLayout.setUpWithViewPager(viewPager)
         viewPager.currentItem= pagerAdapter.count / 2
 
         cityId = intent.getStringExtra("name")
@@ -157,8 +159,7 @@ class MainActivity : AppCompatActivity() {
                                         main?.pressure
 
                             weatherProgress.isHidden = response.isSuccessful
-                            textWeather.text = stringBuilder
-                            textWeather.isVisible = response.isSuccessful
+
                         }
                     }
                 }
@@ -264,8 +265,6 @@ class MainActivity : AppCompatActivity() {
                                         main?.pressure
 
                             weatherProgress.isHidden = response.isSuccessful
-                            textWeather.text = stringBuilder
-                            textWeather.isVisible = response.isSuccessful
                         }
                     }
                 }

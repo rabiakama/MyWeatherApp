@@ -7,6 +7,10 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import com.example.myweather.city.City
+import com.example.myweather.city.CityDetail
+import com.example.myweather.city.CityHelper
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,8 +47,29 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+       val view= inflater.inflate(R.layout.fragment_main, container, false)
+        val cityName= view.findViewById<TextView>(R.id.tv_cityName)
+        val temp= view.findViewById<TextView>(R.id.tv_tempInDegree)
+        val tempMax= view.findViewById<TextView>(R.id.tv_tempMax)
+        val tempMin= view.findViewById<TextView>(R.id. tv_tempMin)
+        val humidity= view.findViewById<TextView>(R.id.tv_Humidity)
+        val rain= view.findViewById<TextView>(R.id.tv_Rain)
+
+        val args=arguments
+        if (args != null) {
+            cityName.text=args.getString(CityHelper.COLUMN_CITY_NAME)
+            temp.text= args.getFloat(CityHelper.COLUMN_TEMP).toString()
+            tempMax.text=args.getFloat(CityHelper.COLUMN_TEMP_MAX).toString()
+            tempMin.text=args.getFloat(CityHelper.COLUMN_TEMP_MIN).toString()
+            humidity.text=args.getFloat(CityHelper.COLUMN_HUMIDITY).toString()
+            rain.text=args.getFloat(CityHelper.COLUMN_RAIN).toString()
+
+        }
+
+        return view
+
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
@@ -64,39 +89,19 @@ class MainFragment : Fragment() {
         super.onDetach()
         listener = null
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MainFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
-        fun newInstance(param1: String) =
+        fun newInstance(city: CityDetail) =
             MainFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    arguments?.putString(CityHelper.COLUMN_CITY_NAME,city.getName())
+                    //buraya rain,humidity vs gelecek
                 }
             }
     }
