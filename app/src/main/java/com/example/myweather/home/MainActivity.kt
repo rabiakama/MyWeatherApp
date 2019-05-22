@@ -74,10 +74,6 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
         setContentView(R.layout.activity_main)
         cityDbHelper = CityHelper(this, "city.db", factory, 2)
 
-        if(cityLis.size >0){
-            setViewPagerAdapter()
-        }
-
         getAllFavCities()
 
         cityId = intent.getStringExtra("name")
