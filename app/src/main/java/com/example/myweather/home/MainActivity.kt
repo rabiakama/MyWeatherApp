@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
     val factory: SQLiteDatabase.CursorFactory? = null
     private  var cityDbHelper: CityHelper?=null
     private lateinit var pagerAdapter: ViewPagerAdapter
-    private lateinit var cityAdapter: CityAdapter
+    private  var cityAdapter: CityAdapter?=null
     private  var cityLis:ArrayList<CityDetail> = arrayListOf()
 
     private val locationCallback: LocationCallback by lazy(NONE) {
@@ -296,7 +296,7 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
 
             override fun onPostExecute(aVoid: Void?) {
                 super.onPostExecute(aVoid)
-                cityAdapter.notifyDataSetChanged()
+                cityAdapter?.notifyDataSetChanged()
             }
         }
         FavoritesTask().execute()

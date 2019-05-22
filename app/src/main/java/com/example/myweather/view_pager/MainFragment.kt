@@ -51,20 +51,19 @@ class MainFragment : Fragment() {
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                 Toast.makeText(context, t.localizedMessage, Toast.LENGTH_LONG).show()
             }
-
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val weatherResponse = response.body()
 
                     weatherResponse?.let {
                         with(it) {
-                            tv_cityName.setText(name)
+                            tv_cityName.text = name
                             if (main != null) {
-                                tv_tempInDegree.setText(main.temp.toString())
-                                tv_tempMax.setText(main.temp_max.toString())
-                                tv_tempMin.setText(main.temp_min.toString())
-                                tv_Humidity.setText(main.humidity.toString())
-                                tv_Rain.setText(main.h3.toString())
+                                tv_tempInDegree.text = main.temp.toString()
+                                tv_tempMax.text = main.temp_max.toString()
+                                tv_tempMin.text = main.temp_min.toString()
+                                tv_Humidity.text = main.humidity.toString()
+                                tv_Rain.text = main.h3.toString()
                             }
                         }
                     }
@@ -90,12 +89,6 @@ class MainFragment : Fragment() {
         val args=arguments
         if (args != null) {
             cityName.text=args.getString(CityHelper.COLUMN_CITY_NAME)
-            temp.text= args.getFloat(CityHelper.COLUMN_TEMP).toString()
-            tempMax.text=args.getFloat(CityHelper.COLUMN_TEMP_MAX).toString()
-            tempMin.text=args.getFloat(CityHelper.COLUMN_TEMP_MIN).toString()
-            humidity.text=args.getFloat(CityHelper.COLUMN_HUMIDITY).toString()
-            rain.text=args.getFloat(CityHelper.COLUMN_RAIN).toString()
-
         }
 
         return view
@@ -139,7 +132,6 @@ class MainFragment : Fragment() {
                     arguments?.putString(CityHelper.COLUMN_CITY_NAME,city.getName())
                     arguments?.putString(CityHelper.COLUMN_COORD_LAT,city.getLat())
                     arguments?.putString(CityHelper.COLUMN_COORD_LONG,city.getLon())
-                    //buraya rain,humidity vs gelecek
                 }
             }
     }

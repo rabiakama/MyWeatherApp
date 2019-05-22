@@ -27,11 +27,6 @@ class CityHelper(context: Context, name: String?, factory: SQLiteDatabase.Cursor
         val COLUMN_CITY_NAME = "name"
         val COLUMN_COORD_LAT = "lat"
         val COLUMN_COORD_LONG = "long"
-        val COLUMN_TEMP = "temp"
-        val COLUMN_TEMP_MIN = "temp_min"
-        val COLUMN_TEMP_MAX = "temp_max"
-        val COLUMN_HUMIDITY = "humidity"
-        val COLUMN_RAIN = "3h"
         val CONTENT_AUTHORITY = "com.example.myweather.city"
     }
     fun open() {
@@ -50,12 +45,8 @@ class CityHelper(context: Context, name: String?, factory: SQLiteDatabase.Cursor
                 COLUMN_CITYID + " INTEGER, " +
                 COLUMN_CITY_NAME + " TEXT NOT NULL, " +
                 COLUMN_COORD_LAT + " REAL NOT NULL, " +
-                COLUMN_COORD_LONG + " REAL NOT NULL, " +
-                COLUMN_TEMP + " REAL NOT NULL, " +
-                COLUMN_TEMP_MAX + " REAL NOT NULL, " +
-                COLUMN_TEMP_MIN + " REAL NOT NULL, " +
-                COLUMN_HUMIDITY + " REAL NOT NULL, " +
-                COLUMN_RAIN + " REAL NOT NULL " +
+                COLUMN_COORD_LONG + " REAL NOT NULL " +
+
 
                 ");"
         if (db != null) {
@@ -100,12 +91,7 @@ class CityHelper(context: Context, name: String?, factory: SQLiteDatabase.Cursor
             COLUMN_CITYID,
             COLUMN_CITY_NAME,
             COLUMN_COORD_LAT,
-            COLUMN_COORD_LONG,
-            COLUMN_TEMP,
-            COLUMN_TEMP_MAX,
-            COLUMN_TEMP_MIN,
-            COLUMN_HUMIDITY,
-            COLUMN_RAIN
+            COLUMN_COORD_LONG
         )
         val sortOrder:String= _ID + " " +"ASC"
         val cityList:ArrayList<CityDetail> = arrayListOf()
