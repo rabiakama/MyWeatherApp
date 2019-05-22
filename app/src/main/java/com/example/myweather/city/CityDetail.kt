@@ -17,8 +17,6 @@ import com.google.gson.annotations.SerializedName
     @SerializedName("region")
     val region: String? = null
 
-
-
      fun getId(): String? {
          return id
      }

@@ -82,7 +82,6 @@ class CityHelper(context: Context, name: String?, factory: SQLiteDatabase.Cursor
             COLUMN_CITYID + "=" + id,
             null
         )
-
     }
 
     fun getAddAll():ArrayList<CityDetail>{

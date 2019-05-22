@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
@@ -38,17 +39,8 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
         this.setTitle("Select City")
 
         city_recycler.setHasFixedSize(true)
-        city_recycler.layoutManager = LinearLayoutManager(this)
+        city_recycler.layoutManager = LinearLayoutManager(this) as RecyclerView.LayoutManager?
         getAllCities()
-
-
-        checkboxCity.setOnCheckedChangeListener { buttonView, isChecked ->
-
-
-
-
-        }
-
     }
 
     private fun getAllCities() {
@@ -138,8 +130,8 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
 
         cityDbHelper?.addCity(city)
         this.startActivity(intent)
-
-        }
-
     }
+
+
+}
 

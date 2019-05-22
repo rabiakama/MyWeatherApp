@@ -21,10 +21,4 @@ class ViewPagerAdapter(manager:FragmentManager,private val cityList:ArrayList<Ci
     override fun getPageTitle(position: Int): CharSequence {
         return cityList[position].getName().toString()
     }
-
-   /* companion object {
-        private const val MAX_VALUE = 200
-    }*/
-
-
 }

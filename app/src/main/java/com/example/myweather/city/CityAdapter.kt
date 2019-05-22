@@ -4,15 +4,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.Filter
 import android.widget.Filterable
 import com.example.myweather.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.city_item.*
-import kotlinx.android.synthetic.main.city_item.view.*
 
-class CityAdapter(val itemCheckedListener: CompoundButton.OnCheckedChangeListener): RecyclerView.Adapter<CityAdapter.ViewHolder>(),Filterable {
+
+class CityAdapter(val itemCheckedListener: OnItemClickListener): RecyclerView.Adapter<CityAdapter.ViewHolder>(),Filterable {
 
     private var citiesFiltered = listOf<CityDetail>()
     var cities = mutableListOf<CityDetail>()
@@ -24,6 +23,7 @@ class CityAdapter(val itemCheckedListener: CompoundButton.OnCheckedChangeListene
 
             notifyDataSetChanged()
         }
+
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
@@ -66,21 +66,23 @@ class CityAdapter(val itemCheckedListener: CompoundButton.OnCheckedChangeListene
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val city = citiesFiltered[position]
-        holder.bindTo(city,itemCheckedListener)
+        holder.bindTo(city, itemCheckedListener)
     }
 
     inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
-        fun bindTo(city: CityDetail,clickListener: CompoundButton.OnCheckedChangeListener) {
+        fun bindTo(city: CityDetail, clickListener: OnItemClickListener) {
             cityName.text = city.name
-            containerView.checkboxCity.setOnCheckedChangeListener { buttonView, isChecked ->
-                clickListener.onCheckedChanged(checkboxCity,true)
+
+            checkboxCity.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked) {
+                    clickListener.onItemClicked(city)
+                }
             }
-
         }
-
     }
-    interface OnItemCheckListener{
-        fun onItemChecked(city:CityDetail)
+
+    interface OnItemClickListener {
+        fun onItemClicked(city: CityDetail)
     }
 }
