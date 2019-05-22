@@ -10,8 +10,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import com.example.myweather.R
 import com.example.myweather.home.MainActivity
 import com.google.gson.Gson
@@ -52,6 +50,7 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
         }
 
     }
+
     private fun getAllCities() {
         val json = readJSONFromAsset()
         val cities = gson.fromJson<City>(json, City::class.java)
@@ -113,7 +112,6 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
         }else
             super.onBackPressed()
     }
-
 
     fun saveCity(){
         val cities=CityDetail()

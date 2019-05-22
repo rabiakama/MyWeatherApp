@@ -7,11 +7,14 @@ import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.database.sqlite.SQLiteDatabase
 import android.os.AsyncTask
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper.myLooper
+import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import com.example.myweather.BuildConfig
@@ -29,7 +32,6 @@ import com.example.myweather.view_pager.ViewPagerAdapter
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 import kotlinx.android.synthetic.main.activity_main.*
-import com.nshmura.recyclertablayout.RecyclerTabLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,7 +41,9 @@ import java.net.HttpURLConnection.HTTP_OK
 import kotlin.LazyThreadSafetyMode.NONE
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , MainActivityContract.View{
+
+    internal lateinit var presenter: MainActivityContract.Presenter
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var lat: String? = null
@@ -52,7 +56,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pagerAdapter: ViewPagerAdapter
     private lateinit var cityAdapter: CityAdapter
     private  var cityLis:ArrayList<CityDetail> = arrayListOf()
-    private lateinit var recyclerTabLayout: RecyclerTabLayout
 
     private val locationCallback: LocationCallback by lazy(NONE) {
         object : LocationCallback() {
@@ -114,13 +117,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewPagerAdapter() {
-        if(pagerAdapter !=null){
-            pagerAdapter.notifyDataSetChanged()
-        }
-        recyclerTabLayout = findViewById(R.id.recyclerTabLayout)
-        recyclerTabLayout.setUpWithViewPager(viewPager)
+
+        pagerAdapter.notifyDataSetChanged()
         viewPager.offscreenPageLimit=cityLis.size
-        viewPager.pageMargin=10
         pagerAdapter= ViewPagerAdapter(supportFragmentManager,cityLis)
         viewPager.adapter=pagerAdapter
     }
@@ -170,7 +169,8 @@ class MainActivity : AppCompatActivity() {
                                         "Pressure: " +
                                         main?.pressure
 
-                            weatherProgress.isHidden = response.isSuccessful
+                            //weatherProgress.isHidden = response.isSuccessful
+                            hideProgress()
 
                         }
                     }
@@ -285,6 +285,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getAllFavCities() {
+        @RequiresApi(Build.VERSION_CODES.CUPCAKE)
         class FavoritesTask : AsyncTask<Void, Void, Void>() {
             override fun doInBackground(vararg params: Void): Void? {
                 cityLis.clear()
@@ -299,6 +300,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         FavoritesTask().execute()
+    }
+
+    override fun showProgress() {
+
+        weatherProgress.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+
+        weatherProgress.visibility = View.GONE
+
     }
 
 }

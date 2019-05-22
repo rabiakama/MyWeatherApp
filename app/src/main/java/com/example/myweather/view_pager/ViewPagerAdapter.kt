@@ -10,21 +10,21 @@ class ViewPagerAdapter(manager:FragmentManager,private val cityList:ArrayList<Ci
 
     override fun getItem(position: Int): Fragment {
 
-        return MainFragment.newInstance(cityList[position % cityList.size] )
+        return MainFragment.newInstance(cityList[position] )
     }
 
     override fun getCount(): Int {
 
-        return cityList.size* MAX_VALUE
+        return cityList.size
     }
 
     override fun getPageTitle(position: Int): CharSequence {
         return cityList[position % cityList.size].getName().toString()
     }
 
-    companion object {
+   /* companion object {
         private const val MAX_VALUE = 200
-    }
+    }*/
 
 
 }
