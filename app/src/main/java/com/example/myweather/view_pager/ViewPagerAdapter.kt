@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.example.myweather.city.CityDetail
+import com.example.myweather.home.MainFragment
 
 
 class ViewPagerAdapter(manager:FragmentManager,private val cityList:ArrayList<CityDetail>) :FragmentStatePagerAdapter(manager){

@@ -1,8 +1,11 @@
-package com.example.myweather.view_pager
+package com.example.myweather.home
 
-import android.content.Context
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper.myLooper
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +14,16 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.myweather.BuildConfig
 import com.example.myweather.R
+import com.example.myweather.city.CityAdapter
 import com.example.myweather.city.CityDetail
 import com.example.myweather.city.CityHelper
 import com.example.myweather.service.WeatherServiceApi
+import com.example.myweather.util.isValid
 import com.example.myweather.weather.WeatherResponse
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import kotlinx.android.synthetic.main.fragment_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,10 +34,27 @@ import java.net.HttpURLConnection
 
 
 class MainFragment : Fragment() {
+
     private var cityName: String? = null
     private var lat: String? = null
     private var lon:String?=null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var lt="38.4189"
+    private var lg="27.1287"
+
     private var listener: OnFragmentInteractionListener? = null
+
+    private val locationCallback: LocationCallback by lazy(LazyThreadSafetyMode.NONE) {
+        object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                if (locationResult.isValid()) {
+                    lat = locationResult.lastLocation.latitude.toString()
+                    lon = locationResult.lastLocation.longitude.toString()
+                     getCurrentData(lat, lon)
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +64,26 @@ class MainFragment : Fragment() {
             lon=it.getString(CityHelper.COLUMN_COORD_LONG)
 
         }
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == MainFragment.PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
+                getLocationUpdates()
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(getLocationRequest(), locationCallback, myLooper())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     private fun getCurrentData(latitude: String?, longitude: String?) {
@@ -71,6 +117,7 @@ class MainFragment : Fragment() {
             }
         })
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,6 +160,17 @@ class MainFragment : Fragment() {
     }
 
     companion object {
+
+        fun getLocationRequest() =
+            LocationRequest().apply {
+                priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+                interval = EXPIRATION_DURATION
+                fastestInterval = INTERVAL_FASTEST
+            }
+
+        private const val EXPIRATION_DURATION = 4000L
+        private const val INTERVAL_FASTEST = 1000L
+        private const val PERMISSION_REQUEST_CODE = 1000
 
         @JvmStatic
         fun newInstance(city: CityDetail) =
