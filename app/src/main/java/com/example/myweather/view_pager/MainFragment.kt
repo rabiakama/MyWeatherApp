@@ -8,27 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import com.example.myweather.BuildConfig
 import com.example.myweather.R
 import com.example.myweather.city.CityDetail
 import com.example.myweather.city.CityHelper
+import com.example.myweather.service.WeatherServiceApi
+import com.example.myweather.weather.WeatherResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.net.HttpURLConnection
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [MainFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [MainFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class MainFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -41,6 +39,61 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun getCurrentData(latitude: String?, longitude: String?) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val service = retrofit.create(WeatherServiceApi::class.java)
+        val call = service.getCurrentWeatherData(latitude, longitude, BuildConfig.API_KEY)
+        call.enqueue(object : Callback<WeatherResponse> {
+            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                Toast.makeText(context, t.localizedMessage, Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    val weatherResponse = response.body()
+
+                    weatherResponse?.let {
+                        with(it) {
+                            val stringBuilder =
+                                "Country: " +
+                                        sys?.country +
+                                        "\n" +
+                                        "City: " +
+                                        name +
+                                        "\n" +
+                                        "Temperature: " +
+                                        main?.temp + "°C" +
+                                        "\n" +
+                                        "Temperature(Min): " +
+                                        main?.temp_min + "°C" +
+                                        "\n" +
+                                        "Temperature(Max): " +
+                                        main?.temp_max + "°C" +
+                                        "\n" +
+                                        "Humidity: " +
+                                        " %" +
+                                        main?.humidity +
+                                        "\n" +
+                                        "Rain: " +
+                                        "%"+
+                                        main?.h3+
+                                        "\n" +
+                                        "Pressure: " +
+                                        main?.pressure
+
+                            //weatherProgress.isHidden = response.isSuccessful
+                            //hideProgress()
+
+                        }
+                    }
+                }
+            }
+        })
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,8 +107,6 @@ class MainFragment : Fragment() {
         val tempMin= view.findViewById<TextView>(R.id.tv_tempMin)
         val humidity= view.findViewById<TextView>(R.id.tv_Humidity)
         val rain= view.findViewById<TextView>(R.id.tv_Rain)
-
-
 
         val args=arguments
         if (args != null) {
@@ -72,8 +123,13 @@ class MainFragment : Fragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-    // TODO: Rename method, update argument and hook method into UI event
+        getCurrentData()
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
@@ -92,7 +148,6 @@ class MainFragment : Fragment() {
         listener = null
     }
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
@@ -103,6 +158,8 @@ class MainFragment : Fragment() {
             MainFragment().apply {
                 arguments = Bundle().apply {
                     arguments?.putString(CityHelper.COLUMN_CITY_NAME,city.getName())
+                    arguments?.putString(CityHelper.COLUMN_COORD_LAT,city.getLat())
+                    arguments?.putString(CityHelper.COLUMN_COORD_LONG,city.getLon())
                     //buraya rain,humidity vs gelecek
                 }
             }
