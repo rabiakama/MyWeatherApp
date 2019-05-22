@@ -4,13 +4,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.Filter
 import android.widget.Filterable
 import com.example.myweather.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.city_item.*
+import kotlinx.android.synthetic.main.city_item.view.*
 
-class CityAdapter(val itemClickListener: OnItemClickListener): RecyclerView.Adapter<CityAdapter.ViewHolder>(),Filterable {
+class CityAdapter(val itemCheckedListener: CompoundButton.OnCheckedChangeListener): RecyclerView.Adapter<CityAdapter.ViewHolder>(),Filterable {
 
     private var citiesFiltered = listOf<CityDetail>()
     var cities = mutableListOf<CityDetail>()
@@ -64,21 +66,21 @@ class CityAdapter(val itemClickListener: OnItemClickListener): RecyclerView.Adap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val city = citiesFiltered[position]
-        holder.bindTo(city,itemClickListener)
+        holder.bindTo(city,itemCheckedListener)
     }
 
     inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
-        fun bindTo(city: CityDetail,clickListener: OnItemClickListener) {
+        fun bindTo(city: CityDetail,clickListener: CompoundButton.OnCheckedChangeListener) {
             cityName.text = city.name
-            itemView.setOnClickListener {
-                clickListener.onItemClicked(city)
-
+            containerView.checkboxCity.setOnCheckedChangeListener { buttonView, isChecked ->
+                clickListener.onCheckedChanged(checkboxCity,true)
             }
+
         }
 
     }
-    interface OnItemClickListener{
-        fun onItemClicked(city: CityDetail)
+    interface OnItemCheckListener{
+        fun onItemChecked(city:CityDetail)
     }
 }
