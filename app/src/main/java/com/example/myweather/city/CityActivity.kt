@@ -20,6 +20,9 @@ import kotlin.Int.Companion.MAX_VALUE
 
 
 
+
+
+
 class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
 
     private val gson = Gson()
@@ -121,6 +124,16 @@ class CityActivity : AppCompatActivity(),CityAdapter.OnItemClickListener {
         }
         cityDbHelper?.addCity(cities)
     }
+
+    /*override fun onPause() {
+        super.onPause()
+        saveCity(checkboxCity.isChecked)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkboxCity.isChecked
+    }*/
 
     override fun onItemClicked(city: CityDetail) {
         val intent = Intent(this, MainActivity::class.java)

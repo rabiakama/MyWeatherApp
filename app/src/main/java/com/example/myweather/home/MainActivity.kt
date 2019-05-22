@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
     private var cityId:String?=null
     val factory: SQLiteDatabase.CursorFactory? = null
     private  var cityDbHelper: CityHelper?=null
-    private lateinit var pagerAdapter: ViewPagerAdapter
+    private  var pagerAdapter: ViewPagerAdapter?=null
     private  var cityAdapter: CityAdapter?=null
     private  var cityLis:ArrayList<CityDetail> = arrayListOf()
 
@@ -74,7 +74,8 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
         setContentView(R.layout.activity_main)
         cityDbHelper = CityHelper(this, "city.db", factory, 2)
 
-        getAllFavCities()
+        setViewPagerAdapter()
+        //getAllFavCities()
 
         cityId = intent.getStringExtra("name")
         lat=intent.getStringExtra("latitude")
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
 
     private fun setViewPagerAdapter() {
 
-        pagerAdapter.notifyDataSetChanged()
+        pagerAdapter?.notifyDataSetChanged()
         viewPager.offscreenPageLimit=cityLis.size
         pagerAdapter= ViewPagerAdapter(supportFragmentManager,cityLis)
         viewPager.adapter=pagerAdapter
