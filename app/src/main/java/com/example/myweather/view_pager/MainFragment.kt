@@ -15,6 +15,7 @@ import com.example.myweather.city.CityDetail
 import com.example.myweather.city.CityHelper
 import com.example.myweather.service.WeatherServiceApi
 import com.example.myweather.weather.WeatherResponse
+import kotlinx.android.synthetic.main.fragment_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,16 +26,16 @@ import java.net.HttpURLConnection
 
 class MainFragment : Fragment() {
     private var cityName: String? = null
-    private var lat: Float? = null
-    private var lon:Float?=null
+    private var lat: String? = null
+    private var lon:String?=null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             cityName = it.getString(CityHelper.COLUMN_CITY_NAME)
-            lat=it.getFloat(CityHelper.COLUMN_COORD_LAT)
-            lon=it.getFloat(CityHelper.COLUMN_COORD_LONG)
+            lat=it.getString(CityHelper.COLUMN_COORD_LAT)
+            lon=it.getString(CityHelper.COLUMN_COORD_LONG)
 
         }
     }
@@ -57,36 +58,14 @@ class MainFragment : Fragment() {
 
                     weatherResponse?.let {
                         with(it) {
-                            val stringBuilder =
-                                "Country: " +
-                                        sys?.country +
-                                        "\n" +
-                                        "City: " +
-                                        name +
-                                        "\n" +
-                                        "Temperature: " +
-                                        main?.temp + "°C" +
-                                        "\n" +
-                                        "Temperature(Min): " +
-                                        main?.temp_min + "°C" +
-                                        "\n" +
-                                        "Temperature(Max): " +
-                                        main?.temp_max + "°C" +
-                                        "\n" +
-                                        "Humidity: " +
-                                        " %" +
-                                        main?.humidity +
-                                        "\n" +
-                                        "Rain: " +
-                                        "%"+
-                                        main?.h3+
-                                        "\n" +
-                                        "Pressure: " +
-                                        main?.pressure
-
-                            //weatherProgress.isHidden = response.isSuccessful
-                            //hideProgress()
-
+                            tv_cityName.setText(name)
+                            if (main != null) {
+                                tv_tempInDegree.setText(main.temp.toString())
+                                tv_tempMax.setText(main.temp_max.toString())
+                                tv_tempMin.setText(main.temp_min.toString())
+                                tv_Humidity.setText(main.humidity.toString())
+                                tv_Rain.setText(main.h3.toString())
+                            }
                         }
                     }
                 }
@@ -125,7 +104,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        getCurrentData()
+        getCurrentData(lat,lon)
         super.onViewCreated(view, savedInstanceState)
     }
 
