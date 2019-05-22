@@ -70,7 +70,6 @@ class MainFragment : Fragment() {
                 }
             }
         })
-
     }
 
     override fun onCreateView(
@@ -101,18 +100,8 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
     }
 
     override fun onDetach() {

@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
         cityDbHelper = CityHelper(this, "city.db", factory, 2)
 
         setViewPagerAdapter()
-        //getAllFavCities()
+        getAllFavCities()
 
         cityId = intent.getStringExtra("name")
         lat=intent.getStringExtra("latitude")
@@ -293,7 +293,7 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
 
             override fun onPostExecute(aVoid: Void?) {
                 super.onPostExecute(aVoid)
-                cityAdapter?.notifyDataSetChanged()
+                pagerAdapter?.notifyDataSetChanged()
             }
         }
         FavoritesTask().execute()

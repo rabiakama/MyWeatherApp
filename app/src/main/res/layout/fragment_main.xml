@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:layout_centerInParent="true"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorAccent"
                     android:text="izmir"/>
 
 
@@ -75,13 +75,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="30"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorAccent"
                     android:textSize="12sp"
                     android:layout_marginStart="10dp" />
 
             <TextView
                     android:id="@+id/tv_temp_max"
-                    android:layout_width="92dp"
+                    android:layout_width="76dp"
                     android:layout_height="match_parent"
                     android:text="Temp(max):"
                     android:textSize="12sp"
@@ -93,13 +93,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_temp"
                     android:text="25"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorAccent"
                     android:textSize="12sp"
                     android:layout_marginStart="10dp" />
 
             <TextView
                     android:id="@+id/tv_temp_min"
-                    android:layout_width="112dp"
+                    android:layout_width="92dp"
                     android:layout_height="wrap_content"
                     android:text="Temp(min):"
                     android:textSize="12sp"
@@ -110,9 +110,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorAccent"
                     android:textSize="12sp"
-                    android:layout_marginStart="10dp" />
+                    android:layout_marginStart="10dp"/>
 
 
 
@@ -134,6 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_Humidity"
+                android:textColor="@color/colorAccent"
                 android:layout_weight="1"/>
         <TextView
                 android:text="Rain:"
@@ -145,6 +146,7 @@
                 android:text="%3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
                 android:id="@+id/tv_Rain"
                 android:layout_weight="1"/>
 
