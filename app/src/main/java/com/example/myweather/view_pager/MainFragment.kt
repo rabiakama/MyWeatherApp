@@ -23,19 +23,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class MainFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    private var cityName: String? = null
+    private var lat: Float? = null
+    private var lon:Float?=null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            cityName = it.getString(CityHelper.COLUMN_CITY_NAME)
+            lat=it.getFloat(CityHelper.COLUMN_COORD_LAT)
+            lon=it.getFloat(CityHelper.COLUMN_COORD_LONG)
+
         }
     }
 
