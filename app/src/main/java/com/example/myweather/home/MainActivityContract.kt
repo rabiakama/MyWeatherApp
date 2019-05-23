@@ -6,6 +6,7 @@ interface MainActivityContract{
 
     interface View{
 
+
         fun hideProgress()
         fun showProgress()
     }

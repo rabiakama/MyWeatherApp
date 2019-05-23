@@ -33,12 +33,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 
 
-class MainFragment : Fragment() {
+open class MainFragment : Fragment() {
 
     private var cityName: String? = null
     private var lat: String? = null
     private var lon:String?=null
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private  var fusedLocationClient: FusedLocationProviderClient?=null
     private var lt="38.4189"
     private var lg="27.1287"
 
@@ -66,7 +66,6 @@ class MainFragment : Fragment() {
         }
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == MainFragment.PERMISSION_REQUEST_CODE) {
@@ -78,12 +77,12 @@ class MainFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun getLocationUpdates() {
-        fusedLocationClient.requestLocationUpdates(getLocationRequest(), locationCallback, myLooper())
+        fusedLocationClient?.requestLocationUpdates(getLocationRequest(), locationCallback, myLooper())
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
     }
 
     private fun getCurrentData(latitude: String?, longitude: String?) {
