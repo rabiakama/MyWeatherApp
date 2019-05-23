@@ -65,17 +65,17 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
 
             when (item.itemId) {
+                R.id.home -> {
+                    viewPager.currentItem=1
+                    fm.beginTransaction().hide(active).show(fragment1).commit()
+                    return@setOnNavigationItemSelectedListener true
+                }
                 R.id.settings -> {
                     viewPager.currentItem=2
                     fm.beginTransaction().hide(active).show(fragment2).commit()
                     return@setOnNavigationItemSelectedListener true
                 }
 
-                R.id.home -> {
-                    viewPager.currentItem=1
-                    fm.beginTransaction().hide(active).show(fragment1).commit()
-                    return@setOnNavigationItemSelectedListener true
-                }
                 else -> return@setOnNavigationItemSelectedListener false
 
             }
