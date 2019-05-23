@@ -38,11 +38,6 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
     private  var cityDbHelper: CityHelper?=null
     private  var pagerAdapter: ViewPagerAdapter?=null
     private  var cityLis:ArrayList<CityDetail> = arrayListOf()
-    val fragment1: Fragment = MainFragment()
-    val fragment2: Fragment = SettingsFragment()
-    val fm : FragmentManager=supportFragmentManager
-    val active:Fragment=fragment1
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,12 +62,16 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
             when (item.itemId) {
                 R.id.home -> {
                     viewPager.currentItem=1
-                    fm.beginTransaction().hide(active).show(fragment1).commit()
+                    val fragment = MainFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
+                        .commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.settings -> {
                     viewPager.currentItem=2
-                    fm.beginTransaction().hide(active).show(fragment2).commit()
+                    val fragment = SettingsFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
+                        .commit()
                     return@setOnNavigationItemSelectedListener true
                 }
 
