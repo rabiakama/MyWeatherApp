@@ -16,14 +16,15 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-
+        <activity
+                android:name=".HomeActivity"
+                android:label="@string/title_activity_home">
+        </activity>
         <activity android:name=".settings.SettingsActivity">
-
-
         </activity>
-        <activity android:name="com.example.myweather.city.CityActivity">
+        <activity android:name=".city.CityActivity">
         </activity>
-        <activity android:name="com.example.myweather.home.MainActivity">
+        <activity android:name=".home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -7,6 +7,9 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.View
 import com.example.myweather.R
 import com.example.myweather.city.CityActivity
@@ -14,8 +17,13 @@ import com.example.myweather.city.CityDetail
 import com.example.myweather.city.CityHelper
 import com.example.myweather.settings.SettingsFragment
 import com.example.myweather.view_pager.ViewPagerAdapter
-import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_main.*
+
+
+
+
+
+
 
 
 
@@ -30,6 +38,10 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
     private  var cityDbHelper: CityHelper?=null
     private  var pagerAdapter: ViewPagerAdapter?=null
     private  var cityLis:ArrayList<CityDetail> = arrayListOf()
+    val fragment1: Fragment = MainFragment()
+    val fragment2: Fragment = SettingsFragment()
+    val fm : FragmentManager=supportFragmentManager
+    val active:Fragment=fragment1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,8 +53,8 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
         getAllFavCities()
 
         cityId = intent.getStringExtra("name")
-        lat=intent.getStringExtra("latitude")
-        lon=intent.getStringExtra("longitude")
+        lat = intent.getStringExtra("latitude")
+        lon = intent.getStringExtra("longitude")
 
 
         floatingButton.setOnClickListener {
@@ -51,25 +63,35 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
         }
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
+
             when (item.itemId) {
                 R.id.settings -> {
                     viewPager.currentItem=2
-                    val intent = Intent(this, SettingsFragment::class.java)
-                    this.startActivity(intent)
+                    fm.beginTransaction().hide(active).show(fragment2).commit()
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.home -> {
                     viewPager.currentItem=1
-                    val intent = Intent(this, MainFragment::class.java)
-                    this.startActivity(intent)
+                    fm.beginTransaction().hide(active).show(fragment1).commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> return@setOnNavigationItemSelectedListener false
 
             }
+
         }
+
     }
+
+    private fun loadFragment(fragment:Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame_container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+
 
     private fun setViewPagerAdapter() {
 
