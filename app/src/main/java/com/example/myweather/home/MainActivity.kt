@@ -45,23 +45,24 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
         lon=intent.getStringExtra("longitude")
 
 
-
         floatingButton.setOnClickListener {
             val intent = Intent(this, CityActivity::class.java)
             startActivity(intent)
         }
 
-
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.settings -> {
+                    viewPager.currentItem=2
                     val intent = Intent(this, SettingsFragment::class.java)
                     this.startActivity(intent)
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.home -> {
-                    getAllFavCities()
+                    viewPager.currentItem=1
+                    val intent = Intent(this, MainFragment::class.java)
+                    this.startActivity(intent)
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> return@setOnNavigationItemSelectedListener false
@@ -77,8 +78,6 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
         pagerAdapter= ViewPagerAdapter(supportFragmentManager,cityLis)
         viewPager.adapter=pagerAdapter
     }
-
-
 
     fun getAllFavCities() {
         @RequiresApi(Build.VERSION_CODES.CUPCAKE)
