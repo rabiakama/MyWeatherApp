@@ -17,6 +17,7 @@ import com.example.myweather.city.CityActivity
 import com.example.myweather.city.CityDetail
 import com.example.myweather.city.CityHelper
 import com.example.myweather.settings.SettingsFragment
+import com.example.myweather.view_pager.MainViewPagerAdapter
 import com.example.myweather.view_pager.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -32,13 +33,18 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
     val factory: SQLiteDatabase.CursorFactory? = null
     private  var cityDbHelper: CityHelper?=null
     private  var pagerAdapter: ViewPagerAdapter?=null
+    private var mainPager:MainViewPagerAdapter?=null
     private  var cityLis:ArrayList<CityDetail> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if(mainPager !=null){
+            val adapt=MainViewPagerAdapter(supportFragmentManager)
+            viewPager.adapter=adapt
+        }
         cityDbHelper = CityHelper(this, "city.db", factory, 2)
-        setViewPagerAdapter()
+       // setViewPagerAdapter()
         getAllFavCities()
 
         cityId = intent.getStringExtra("name")
@@ -66,7 +72,7 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
             }
 
             var fragmentTransaction=supportFragmentManager.beginTransaction()
-            selectedFragment?.let { fragmentTransaction.replace(R.id.frame_container, it) }
+            selectedFragment.let { fragmentTransaction.replace(R.id.frame_container, it) }
             fragmentTransaction.commit()
             return@setOnNavigationItemSelectedListener true
 
@@ -76,11 +82,10 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
 
 
     private fun setViewPagerAdapter() {
-
-        pagerAdapter?.notifyDataSetChanged()
         viewPager.offscreenPageLimit=cityLis.size
         pagerAdapter= ViewPagerAdapter(supportFragmentManager,cityLis)
         viewPager.adapter=pagerAdapter
+        pagerAdapter?.notifyDataSetChanged()
     }
 
     fun getAllFavCities() {

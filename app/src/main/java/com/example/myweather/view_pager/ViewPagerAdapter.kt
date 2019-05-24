@@ -7,10 +7,9 @@ import com.example.myweather.city.CityDetail
 import com.example.myweather.home.MainFragment
 
 
-class ViewPagerAdapter(manager:FragmentManager,private val cityList:ArrayList<CityDetail>) :FragmentStatePagerAdapter(manager){
+class ViewPagerAdapter(manager:FragmentManager,private var cityList:ArrayList<CityDetail>) :FragmentStatePagerAdapter(manager){
 
-    override fun getItem(position: Int): Fragment {
-
+    override fun getItem(position: Int): Fragment? {
         return MainFragment.newInstance(cityList[position] )
     }
 
