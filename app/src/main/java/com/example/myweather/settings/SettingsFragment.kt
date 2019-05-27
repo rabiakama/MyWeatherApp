@@ -1,6 +1,7 @@
 package com.example.myweather.settings
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -42,7 +43,6 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.title = "Settings"
 
         val view= inflater.inflate(R.layout.fragment_settings, container, false)
         val text=view.findViewById<TextView>(R.id.txttitle)
@@ -76,17 +76,34 @@ class SettingsFragment : Fragment() {
 
     fun turnGPSOn() {
 
+
         if (!hasGpsPermissions()) {
+
+
             if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity!!, Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                Toast.makeText(this.activity, "error", Toast.LENGTH_SHORT).show()
+                showExplanationForPermissions()
 
             } else {
                 askGetPermission()
             }
+
             return
         }
+
         enableGPS(activity!!.baseContext)
+
+    }
+
+
+    fun askGetPermission() {
+        activity?.let {
+            ActivityCompat.requestPermissions(
+                it,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                MY_PERMISSIONS_REQUEST_GPS
+            )
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -162,6 +179,14 @@ class SettingsFragment : Fragment() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    private fun showExplanationForPermissions() {
+        AlertDialog.Builder(this.activity)
+            .setMessage("....)")
+            .setNeutralButton("Ok") { dialog, which -> askGetPermission() }.show()
+    }
+
+
+
 
     private fun isGpsEnable(): Boolean {
         val locationManager = activity!!.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -169,15 +194,6 @@ class SettingsFragment : Fragment() {
         return locationManager.isProviderEnabled(Context.LOCATION_SERVICE)
     }
 
-    fun askGetPermission() {
-        activity?.let {
-            ActivityCompat.requestPermissions(
-                it,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                MY_PERMISSIONS_REQUEST_GPS
-            )
-        }
-    }
 
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

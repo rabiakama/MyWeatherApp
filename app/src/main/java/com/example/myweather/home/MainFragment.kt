@@ -99,7 +99,6 @@ open class MainFragment : Fragment() {
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val weatherResponse = response.body()
-
                     weatherResponse?.let {
                         with(it) {
                             tv_cityName.text = name
@@ -142,7 +141,7 @@ open class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        getCurrentData(lat,lon)
+        getCurrentData(lt,lg)
         super.onViewCreated(view, savedInstanceState)
     }
 

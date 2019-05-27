@@ -7,10 +7,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.support.design.widget.BottomNavigationView
-import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
-import android.view.MenuItem
 import android.view.View
 import com.example.myweather.R
 import com.example.myweather.city.CityActivity
@@ -20,7 +17,6 @@ import com.example.myweather.settings.SettingsFragment
 import com.example.myweather.view_pager.MainViewPagerAdapter
 import com.example.myweather.view_pager.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 
 class MainActivity : AppCompatActivity() , MainActivityContract.View{
@@ -44,7 +40,7 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
             viewPager.adapter=adapt
         }
         cityDbHelper = CityHelper(this, "city.db", factory, 2)
-       // setViewPagerAdapter()
+        setViewPagerAdapter()
         getAllFavCities()
 
         cityId = intent.getStringExtra("name")
@@ -53,7 +49,6 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
 
 
         floatingButton.setOnClickListener {
-            viewPager.currentItem=3
             val intent = Intent(this, CityActivity::class.java)
             startActivity(intent)
         }
@@ -62,16 +57,16 @@ class MainActivity : AppCompatActivity() , MainActivityContract.View{
             var selectedFragment: Fragment? =null
             when(item.itemId){
                 R.id.home ->{
-                    viewPager.currentItem = 1
+                    //viewPager.currentItem = 1
                     selectedFragment=MainFragment()
                 }
                 R.id.settings ->{
-                    viewPager.currentItem=2
+                    //viewPager.currentItem=2
                     selectedFragment=SettingsFragment()
                 }else -> return@setOnNavigationItemSelectedListener false
             }
 
-            var fragmentTransaction=supportFragmentManager.beginTransaction()
+            val fragmentTransaction=supportFragmentManager.beginTransaction()
             selectedFragment.let { fragmentTransaction.replace(R.id.frame_container, it) }
             fragmentTransaction.commit()
             return@setOnNavigationItemSelectedListener true
