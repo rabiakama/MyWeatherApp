@@ -4,7 +4,7 @@ This application is a weather app taken from Open Weather Api.
 # Screenshots
  Home 
 
-<img src="https://user-images.githubusercontent.com/47974363/57990022-32b17e00-7aab-11e9-96db-e9829665ecbd.png" width="44%"/>
+<img src="https://user-images.githubusercontent.com/47974363/58418495-91b95900-8090-11e9-862e-64a7529575d2.png" width="44%"/>
 
  City List of Turkey
 
